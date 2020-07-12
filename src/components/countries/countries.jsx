@@ -1,8 +1,25 @@
 import React from 'react'
+import {FormControl, NativeSelect} from '@material-ui/core';
+import {fetchCountries} from '../../api/api';
+import {useState, useEffect} from 'react';
 
 const Countries = () => {
+    const [getFectchCountries, setFetchCountries] = useState([])
+    useEffect(() => {
+        const fetchApi = async () =>{
+            setFetchCountries(await fetchCountries());
+        }
+        fetchApi();
+    },[setFetchCountries]);
+
+    console.log(getFectchCountries)
     return(
-        <h1>countries</h1>
+        <FormControl>
+            <NativeSelect>
+                <option value = "global">Global</option>
+    {getFectchCountries.map((country, i)=><option key = {i} value={country}>{country}</option>)}
+            </NativeSelect>
+        </FormControl>
     )
 }
 

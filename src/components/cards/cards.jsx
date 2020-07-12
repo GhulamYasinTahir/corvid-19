@@ -13,7 +13,7 @@ const Cards = ({data: {confirmed, recovered, deaths, lastUpdate} }) => {
     return 'loading...';
   }
 
-    console.log( deaths);
+     console.log( deaths);
     if(!deaths){
       return 'loading...';
     }
