@@ -5,23 +5,37 @@ import Charts from './components/charts/charts'
 import styles from './App.module.css'
 import { fetchData } from './api/api';
 
+
+
 class App extends React.Component{
     state = {
         data: {},
+        country:'',
     }
     async componentDidMount() {
+
+        
+
         const fetch = await fetchData();
         this.setState({data: fetch});
     }
+    countryChangeHandle = async (country)=>{
+        const fetch = await fetchData(country);
+        this.setState({data: fetch, country:country});
+
+        console.log(country)
+    }
+
 
     render() {
-        const {data} = this.state;
+        const {data, country} = this.state;
         return(
             <div className={styles.container}>  
                 
                 <Cards data={data} />
-                <Countries />
-                <Charts />
+                <Countries countryChangeHandle={this.countryChangeHandle} />
+                <Charts data={data} country={country}/>
+                
             </div>
         )
     }

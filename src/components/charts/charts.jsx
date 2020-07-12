@@ -5,7 +5,7 @@ import {fetchDailyData} from '../../api/api'
 import styles from './charts.module.css';
 import { rgbToHex } from '@material-ui/core';
 
-const Chart = () =>{
+const Chart = ({data: {confirmed,recovered,deaths}, country}) =>{
 
     const [dailyData, setDailyData] = useState ([]);
     useEffect(()=>{
@@ -14,7 +14,7 @@ const Chart = () =>{
 
        //console.log(dailyData)
         fetchApi();
-    });
+    },[]);
     const LineChart = (
         dailyData.length
          ?(<Line data={{ labels: dailyData.map(({date}) => date), 
@@ -23,10 +23,26 @@ const Chart = () =>{
        
     );
 
+    const barChart = (
+        confirmed ?(
+            <Bar 
+            data={{labels:['infected','recovered','deaths'],
+            datasets:[{label:'people',
+            backgroundColor:['blue','green','red',],
+            data: [confirmed.value, recovered.value, deaths.value]
+        }]}}
+            options={{
+                legend: {display:false},
+                title:{display:true, text:`current state is ${country}`}
+            }}/>
+        ):null
+
+    );
+
 
     return(
        <div className={styles.container}>
-           {LineChart}
+           {country ? barChart :LineChart}
        </div>
     )
 }
